@@ -1,18 +1,19 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import {
-    useCreateFAQMutation,
-    useUpdateFAQMutation,
+  useCreateFAQMutation,
+  useUpdateFAQMutation,
 } from '@/rtk/features/api/apiSlice';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
-const FAQForm = ({ mode, faqId, defaultValues, onClose }) => {
+const FaqForm = ({ mode, faqId, defaultValues, onClose }) => {
   const {
     register,
     handleSubmit,
@@ -31,10 +32,10 @@ const FAQForm = ({ mode, faqId, defaultValues, onClose }) => {
     try {
       if (mode === 'create') {
         await createFAQ(data).unwrap();
-        alert('FAQ created successfully!');
+        toast.success('FAQ created successfully!');
       } else if (mode === 'edit') {
         await updateFAQ({ id: faqId, ...data }).unwrap();
-        alert('FAQ updated successfully!');
+        toast.success('FAQ updated successfully!');
       }
       reset();
       onClose(); // Close the modal after submission
@@ -102,7 +103,7 @@ const FAQForm = ({ mode, faqId, defaultValues, onClose }) => {
           onValueChange={(value) => setValue('category', value)}
           defaultValue={watch('category') || 'general'}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full capitalize">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent>
@@ -110,6 +111,7 @@ const FAQForm = ({ mode, faqId, defaultValues, onClose }) => {
               <SelectItem
                 key={category}
                 value={category}
+                className="capitalize"
               >
                 {category}
               </SelectItem>
@@ -146,4 +148,4 @@ const FAQForm = ({ mode, faqId, defaultValues, onClose }) => {
   );
 };
 
-export default FAQForm;
+export default FaqForm;
